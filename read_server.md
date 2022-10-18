@@ -67,8 +67,7 @@ For instance, if you fill the form with "dean" then submit it, Express wont have
 It will send `{}` after you click submit. But if you uncommented `app.use(express.urlencoded({extended: false}))`,
 then you will get `{"username": "dean"}`.
 
-**So the difference is `express.json()` is a body parser for post request `**except**` html post form **
- ** and `express.urlencoded({extended: false})` is a body parser for html post form.**
+**So the difference is `express.json()` is a body parser for post request `**except**` html post form and `express.urlencoded({extended: false})` is a body parser for html post form.**
 
 
 
