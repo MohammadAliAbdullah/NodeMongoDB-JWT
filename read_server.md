@@ -27,5 +27,49 @@ Here is the explanation that should clear doubts on `express.json()` and `expres
         // combines the 2 above, then you can parse incoming Request Object if object, with nested objects, or generally any type.
         app.use(bodyParser.urlencoded({ extended: true }));
 
+# Diff
+
+If you ask me "what is the **difference** between `express.urlencoded({extended: false})` and `express.json()`", well, the difference is:
+
+ - `express.json()`
+
+If you use `express.json()` it will parse the body from post/fetch request **except** from html post form. It wont parse information from the html **post** form :
+
+    <form action="/" method="POST">
+        <input type="text" name="username">
+        <button>Submit</button>
+    </form>
+
+For instance, if you fill the form with "dean" then submit it, Express wont have an idea what inside the body with this express code:
+
+    const express = require('express')
+    const app = express()
+    
+    app.use(express.json())
+    // app.use(express.urlencoded({ extended: false }))
+    app.use(express.static("public"))
+    
+    
+    app.get("/", (req, res) => {
+        res.sendFile("index.html")
+    })
+    
+    app.post("/", (req, res) => {
+        res.send(req.body)
+    })
+    
+    
+    const port = process.env.PORT || 3001
+    app.listen(port, () => {
+        console.log(`Server Up in Port ${port}`);
+    })
+
+It will send `{}` after you click submit. But if you uncommented `app.use(express.urlencoded({extended: false}))`,
+then you will get `{"username": "dean"}`.
+
+So the difference is `express.json()` is a body parser for post request **except** html post form and `express.urlencoded({extended: false})` is a body parser for html post form.
+
+
+
 
 source: https://stackoverflow.com/questions/23259168/what-are-express-json-and-express-urlencoded
